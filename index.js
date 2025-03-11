@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const sql = require('mssql');
 const dbConfig = {
     user: 'sqladmin',
-    password: 'DesarrolloWeb1',
+    password: 'Admin123',
     server: '34.136.224.59',
     database: 'MEDICAMENTOS',
     options: {
@@ -26,13 +26,23 @@ const dbConfig = {
 app.get('/api/Medicamentos', async(req, res) => {
     try {
         const pool = await sql.connect(dbConfig);
-        const result = await pool.request().execute('sp_obtener_medicamentos');
+        const result = await pool.request().execute('sp_obtener_listado_medicamentos');
         res.json(result.recordset);
     } catch (err) {
         res.status(500).send(err.message);
     }
 });
 
+// Obtener listado de medicamentos con tipo, proveedor y nivel de riesgo tipificados (GET)
+app.get('api/MedicamentosDetallados', async(req, res) => {
+    try {
+        const pool = await sql.connect(dbConfig);
+        const result = await pool.request().execute('sp_obtener_medicamentos_con_detalles');
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
 
 
 app.listen(PORT, () => {
