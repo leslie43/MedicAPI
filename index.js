@@ -25,24 +25,19 @@ const dbConfig = {
 // Obtener listado de medicamentos (GET)
 app.get('/api/Medicamentos', async(req, res) => {
     try {
+        // Conexión a la base de datos
         const pool = await sql.connect(dbConfig);
-        const result = await pool.request().execute('sp_obtener_listado_medicamentos');
+        // Ejecución de la consulta almacenada sp_obtener_listado_medicamentos en la base de datos
+        const result = await pool.request().execute('sp_GetMedicamentos');
+        // Envío de la respuesta en formato JSON
         res.json(result.recordset);
+
     } catch (err) {
+        // En caso de error, se envía un mensaje con el error
         res.status(500).send(err.message);
     }
 });
 
-// Obtener listado de medicamentos con tipo, proveedor y nivel de riesgo tipificados (GET)
-app.get('api/MedicamentosDetallados', async(req, res) => {
-    try {
-        const pool = await sql.connect(dbConfig);
-        const result = await pool.request().execute('sp_obtener_medicamentos_con_detalles');
-        res.json(result.recordset);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
 
 
 app.listen(PORT, () => {
