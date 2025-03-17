@@ -51,7 +51,7 @@ app.get('/api/EntidadReg', async(req, res) => {
     }
 });
 
-// Obtener Evento Adversos por Medicamentos
+// Obtener Evento Adversos por Medicamentos (GET)
 app.get('/api/EvenAdvMed', async(req, res) => {
     try{
         const pool = await sql.connect(dbConfig);
@@ -62,7 +62,7 @@ app.get('/api/EvenAdvMed', async(req, res) => {
     }
 });
 
-// Obtener inspector por entidad reguladora
+// Obtener inspector por entidad reguladora (GET)
 app.get('/api/InspcEntd', async(res) => {
     try{
         const pool = await sql.connect(dbConfig);
@@ -74,7 +74,7 @@ app.get('/api/InspcEntd', async(res) => {
 
 });
 
-// Obtener medicamentos por inspeccion
+// Obtener medicamentos por inspeccion (GET)
 app.get('/api/MedInsp', async(res) => {
     try{
         const pool = await sql.connect(dbConfig);
@@ -86,7 +86,7 @@ app.get('/api/MedInsp', async(res) => {
     }
 });
 
-// Obtener medicamentos por lotes
+// Obtener medicamentos por lotes (GET)
 app.get('/api/LoteMed', async(res) => {
     try{
         const pool = await sql.connect(dbConfig);
@@ -97,7 +97,7 @@ app.get('/api/LoteMed', async(res) => {
     }
 });
 
-// Obtener medicacmentos
+// Obtener medicacmentos (GET)
 app.get('/api/Meds', async(res) => {
     try{
         const pool = await sql.connect(dbConfig);
@@ -108,7 +108,7 @@ app.get('/api/Meds', async(res) => {
     }
 });
 
-// Obtener proveedor de medicamentos
+// Obtener proveedor de medicamentos (GET)
 app.get('/api/MedsProv', async(res) =>{
     try{
         const pool = await sql.connect(dbConfig);
@@ -119,7 +119,7 @@ app.get('/api/MedsProv', async(res) =>{
     }
 });
 
-// Obtener listado de proveedores
+// Obtener listado de proveedores (GET)
 app.get('/api/Provd', async(res) =>{
     try{
         const pool = await sql.connect(dbConfig);
