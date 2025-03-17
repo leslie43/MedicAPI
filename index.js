@@ -551,7 +551,7 @@ app.post('/api/SetEntidadReguladoraEstado', async (req, res) => {
     }
 });
 
-// Cambiar estado de Inspector (POST)
+// Cambiar estado de Inspector (POST) Testing
 app.post('/api/SetInspectorEstado', async (req, res) => {
     try {
         const { idInspector, nuevoEstado } = req.body;
