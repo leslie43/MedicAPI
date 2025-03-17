@@ -521,7 +521,7 @@ app.post('/api/TipoMedicamento', async (req, res) => {
     }
 });
 
-// Cambiar estado de Ensayo Clínico (POST)
+// Actualizar estado de Ensayo Clínico (SET)
 app.post('/api/SetEnsayoClinicoEstado', async (req, res) => {
     try {
         const { idEnsayo, nuevoEstado } = req.body;
