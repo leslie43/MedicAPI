@@ -418,7 +418,7 @@ app.post('/api/TipoMedicamento', async (req, res) => {
     }
 });
 
-// Insertar Ensayo Clínico (POST)
+// Insertar Ensayo Clínico (SET)
 app.post('/api/EnsayoClinico', async (req, res) => {
     try {
         const { id_med, ens_fase, ens_poblacion_objetivo, ens_eficacia_observada, ens_estado } = req.body;
@@ -429,14 +429,14 @@ app.post('/api/EnsayoClinico', async (req, res) => {
             .input('ens_poblacion_objetivo', sql.NVarChar, ens_poblacion_objetivo)
             .input('ens_eficacia_observada', sql.Decimal(5, 2), ens_eficacia_observada)
             .input('ens_estado', sql.Bit, ens_estado)
-            .execute('sp_PostEnsClc');
+            .execute('sp_PostEnsClcEST');
         res.json({ Message: 'Ensayo Clínico inserted successfully' });
     } catch (err) {
         res.status(500).send(err.message);
     }
 });
 
-// Insertar Entidad Reguladora (POST)
+// Insertar Entidad Reguladora (SET)
 app.post('/api/EntidadReguladora', async (req, res) => {
     try {
         const { ent_nombre, ent_pais, ent_estado } = req.body;
@@ -445,14 +445,14 @@ app.post('/api/EntidadReguladora', async (req, res) => {
             .input('ent_nombre', sql.NVarChar, ent_nombre)
             .input('ent_pais', sql.NVarChar, ent_pais)
             .input('ent_estado', sql.Bit, ent_estado)
-            .execute('sp_PostEnt');
+            .execute('sp_SetEntReguladoraEST');
         res.json({ Message: 'Entidad Reguladora inserted successfully' });
     } catch (err) {
         res.status(500).send(err.message);
     }
 });
 
-// Insertar Evento Adverso (POST)
+// Insertar Evento Adverso (EST) Hasta aqui
 app.post('/api/EventosAdversos', async (req, res) => {
     try {
         const { id_tipo_evento, ev_fecha_reporte, id_gravedad, ev_resultado } = req.body;
