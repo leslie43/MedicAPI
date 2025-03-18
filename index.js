@@ -53,7 +53,7 @@ app.get('/api/EntidadReg/:nombreEntidad', async (req, res) => {
 });
 
 
-// Obtener Evento Adversos por Medicamentos (GET)
+// Obtener Evento Adversos por Medicamentos
 app.get('/api/InspcEntd/:nombreEntidad', async (req, res) => {
     try {
         const { nombreEntidad } = req.params;  // Obtiene el parámetro desde la URL
@@ -68,7 +68,7 @@ app.get('/api/InspcEntd/:nombreEntidad', async (req, res) => {
 });
 
 
-// Obtener inspector por entidad reguladora (GET)
+// Obtener inspector por entidad reguladora
 app.get('/api/InspcEntd/:nombreEntidad', async (req, res) => {
     try {
         const { nombreEntidad } = req.params;  // Obtiene el parámetro desde la URL
@@ -184,69 +184,6 @@ app.post('/api/EntidadReguladora', async (req, res) => {
     }
 });
 
-// Insertar Evento-Ensayo (POST)
-app.post('/api/EnsayoClinico', async (req, res) => {
-    try {
-        const { id_med, ens_fase, ens_poblacion_objetivo, ens_eficacia_observada, ens_estado } = req.body;
-        const pool = await sql.connect(dbConfig);
-        const result = await pool.request()
-            .input('id_med', sql.Int, id_med)
-            .input('ens_fase', sql.NVarChar, ens_fase)
-            .input('ens_poblacion_objetivo', sql.NVarChar, ens_poblacion_objetivo)
-            .input('ens_eficacia_observada', sql.Decimal(5, 2), ens_eficacia_observada)
-            .input('ens_estado', sql.Bit, ens_estado)
-            .execute('sp_PostEnsClc');
-
-        res.json({ Message: "Ensayo Clínico inserted successfully" });
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
-
-
-// Obtener listado de Ensayo Clínico (GET)
-app.get('/api/EnsayoClinico', async (req, res) => {
-    try {
-        const pool = await sql.connect(dbConfig);
-        const result = await pool.request().execute('sp_GetEnsayoClinico');
-        res.json(result.recordset);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
-
-// Obtener listado de Entidad Reguladora (GET)
-app.get('/api/EntidadReguladora', async (req, res) => {
-    try {
-        const pool = await sql.connect(dbConfig);
-        const result = await pool.request().execute('sp_GetEntidadReguladora');
-        res.json(result.recordset);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
-
-// Obtener listado de Evento-Ensayo (GET)
-app.get('/api/EventoEnsayo', async (req, res) => {
-    try {
-        const pool = await sql.connect(dbConfig);
-        const result = await pool.request().execute('sp_GetEvento_Ensayo');
-        res.json(result.recordset);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
-
-// Obtener listado de Eventos Adversos (GET)
-app.get('/api/EventosAdversos', async (req, res) => {
-    try {
-        const pool = await sql.connect(dbConfig);
-        const result = await pool.request().execute('sp_GetEventos_Adversos');
-        res.json(result.recordset);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
 
 // Insertar Evento Adverso (POST)
 app.post('/api/EventosAdversos', async (req, res) => {
@@ -285,7 +222,7 @@ app.post('/api/Inspeccion', async (req, res) => {
     }
 });
 
-// Insertar Inspección Inspectores (POST)
+// Insertar Inspector (POST)
 app.post('/api/Inspector', async (req, res) => {
     try {
         const { id_entidadreguladora, inspec_nombre, inspec_apellido, inspec_estado } = req.body;
@@ -296,29 +233,12 @@ app.post('/api/Inspector', async (req, res) => {
             .input('inspec_apellido', sql.NVarChar, inspec_apellido)
             .input('inspec_estado', sql.Bit, inspec_estado)
             .execute('sp_PostInspector');
-
-        res.json({ Message: result.recordset[0].Message }" });
+        res.json({ Message: 'Inspector inserted successfully' });
     } catch (err) {
         res.status(500).send(err.message);
     }
 });
 
-// Insertar Inspector (POST)
-app.post('/api/Inspectores', async (req, res) => {
-    try {
-        const { id_entidadreguladora, inspec_nombre, inspec_apellido, inspec_estado } = req.body;
-        const pool = await sql.connect(dbConfig);
-        const result = await pool.request()
-            .input('id_entidadreguladora', sql.Int, id_entidadreguladora)
-            .input('inspec_nombre', sql.NVarChar, inspec_nombre)
-            .input('inspec_apellido', sql.NVarChar, inspec_apellido)
-            .input('inspec_estado', sql.Bit, inspec_estado)
-            .execute('sp_PostInspectores');
-        res.json({ NewInspectorID: result.recordset[0].NewInspectorID });
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
 
 // Insertar Lote Medicamento (POST)
 app.post('/api/LoteMedicamento', async (req, res) => {
@@ -356,20 +276,6 @@ app.post('/api/Medicamentos', async (req, res) => {
     }
 });
 
-// Insertar Medicamento Evento (POST)
-app.post('/api/MedicamentosEvento', async (req, res) => {
-    try {
-        const { id_medicamento, id_evento } = req.body;
-        const pool = await sql.connect(dbConfig);
-        const result = await pool.request()
-            .input('id_medicamento', sql.Int, id_medicamento)
-            .input('id_evento', sql.Int, id_evento)
-            .execute('sp_Postmedicamentos_evento');
-        res.json({ Message: result.recordset[0].Message });
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
 
 // Insertar Proveedor (POST)
 app.post('/api/Proveedores', async (req, res) => {
@@ -382,21 +288,6 @@ app.post('/api/Proveedores', async (req, res) => {
             .input('pro_historial', sql.Text, pro_historial)
             .execute('sp_PostProv');
         res.json({ NewProveedorID: result.recordset[0].NewProveedorID });
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
-
-// Insertar Tipo Evento (POST)
-app.post('/api/TipoEvento', async (req, res) => {
-    try {
-        const { nombre_evento, descripcion_evento } = req.body;
-        const pool = await sql.connect(dbConfig);
-        const result = await pool.request()
-            .input('nombre_evento', sql.NVarChar, nombre_evento)
-            .input('descripcion_evento', sql.NVarChar, descripcion_evento)
-            .execute('sp_Posttipo_evento');
-        res.json({ NewTipoEventoID: result.recordset[0].NewTipoEventoID });
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -592,7 +483,7 @@ app.post('/api/TipoMedicamento', async (req, res) => {
     }
 });
 
-// Cambiar estado de Ensayo Clínico (POST)
+// Actualizar estado de Ensayo Clínico (SET)
 app.post('/api/SetEnsayoClinicoEstado', async (req, res) => {
     try {
         const { idEnsayo, nuevoEstado } = req.body;
@@ -607,7 +498,7 @@ app.post('/api/SetEnsayoClinicoEstado', async (req, res) => {
     }
 });
 
-// Cambiar estado de Entidad Reguladora (POST)
+// Actualizar estado de Entidad Reguladora (SET)
 app.post('/api/SetEntidadReguladoraEstado', async (req, res) => {
     try {
         const { idEntidad, nuevoEstado } = req.body;
@@ -622,7 +513,7 @@ app.post('/api/SetEntidadReguladoraEstado', async (req, res) => {
     }
 });
 
-// Cambiar estado de Inspector (POST)
+// Actualizar estado de Inspector (SET)
 app.post('/api/SetInspectorEstado', async (req, res) => {
     try {
         const { idInspector, nuevoEstado } = req.body;
@@ -637,7 +528,7 @@ app.post('/api/SetInspectorEstado', async (req, res) => {
     }
 });
 
-// Cambiar estado de Lote (POST)
+// Actualizar estado de Lote (SET)
 app.post('/api/SetLoteEstado', async (req, res) => {
     try {
         const { idLote, nuevoEstado } = req.body;
@@ -652,7 +543,7 @@ app.post('/api/SetLoteEstado', async (req, res) => {
     }
 });
 
-// Cambiar estado de Medicamento (POST)
+// Actualizar estado de Medicamento (SET)
 app.post('/api/SetMedicamentoEstado', async (req, res) => {
     try {
         const { idMedicamento, nuevoEstado } = req.body;
@@ -667,7 +558,7 @@ app.post('/api/SetMedicamentoEstado', async (req, res) => {
     }
 });
 
-// Cambiar estado de Proveedor (POST)
+// Actualizar estado de Proveedor (SET)
 app.post('/api/SetProveedorEstado', async (req, res) => {
     try {
         const { idProveedor, nuevoEstado } = req.body;
@@ -682,7 +573,7 @@ app.post('/api/SetProveedorEstado', async (req, res) => {
     }
 });
 
-// Cambiar estado de Tipo Medicamento (POST)
+// Actualizar estado de Tipo Medicamento (SET)
 app.post('/api/SetTipoMedicamentoEstado', async (req, res) => {
     try {
         const { idTipoMedicamento, nuevoEstado } = req.body;
