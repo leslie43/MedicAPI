@@ -429,7 +429,7 @@ app.post('/api/EnsayoClinico', async (req, res) => {
             .input('ens_poblacion_objetivo', sql.NVarChar, ens_poblacion_objetivo)
             .input('ens_eficacia_observada', sql.Decimal(5, 2), ens_eficacia_observada)
             .input('ens_estado', sql.Bit, ens_estado)
-            .execute('sp_PostEnsClc');
+            .execute('sp_PostEnsClcEST');
         res.json({ Message: 'Ensayo Clínico inserted successfully' });
     } catch (err) {
         res.status(500).send(err.message);
